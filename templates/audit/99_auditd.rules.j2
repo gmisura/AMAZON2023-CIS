@@ -90,6 +90,7 @@
 {% endif %}
 {% if amzn2023cis_rule_5_2_3_19 %}
 -a always,exit -F arch=b64 -S init_module,finit_module,delete_module,create_module,query_module -F auid>={{ min_int_uid }} -F auid!=unset -k kernel_modules
+-a always,exit -F arch=b32 -S init_module,finit_module,delete_module,create_module,query_module -F auid>={{ min_int_uid }} -F auid!=unset -k kernel_modules
 -a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>={{ min_int_uid }} -F auid!=unset -k kernel_modules
 {% endif %}
 {% if amzn2023cis_rule_5_2_3_20 %}
