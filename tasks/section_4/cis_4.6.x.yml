@@ -106,7 +106,7 @@
             line: 'UMASK {{ amzn2023cis_umask }}'
             create: yes
 
-      - name: "4.6.5 | PATCH | Ensure USERGROUPS is not enabled in login.defs
+      - name: "4.6.5 | PATCH | Ensure USERGROUPS is not enabled in login.defs"
         ansible.builtin.lineinfile:
             path: /etc/login.defs
             regexp: '^USERGROUPS_ENAB'
