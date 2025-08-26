@@ -87,19 +87,26 @@
       - NIST800-53R5_CM-7
       - NIST800-53R5_IA-5
 
-- name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive"
+- name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Ensure USERGROUPS_ENAB is no"
   block:
-      - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/login.defs pam_umask settings"
-        ansible.builtin.replace:
+      - name: "4.6.5 | PATCH | Set umask in bashrc and profile"
+        ansible.builtin.lineinfile:
             path: "{{ item }}"
-            regexp: ^(?i)(\s*umask)\s+(?!\d*[2,7]7)\d{3,4}
-            replace: '\1 {{ amzn2023cis_umask }}'
+            regexp: '^(\s*)umask\s+\d{3,4}'
+            line: 'umask {{ amzn2023cis_umask }}'
+            create: yes
         loop:
             - /etc/bashrc
             - /etc/profile
-            - /etc/login.defs
 
-      - name: "4.6.5 | PATCH | Ensure default user umask is 027 or more restrictive | Set umask for /etc/bashrc"
+      - name: "4.6.5 | PATCH | Set UMASK in login.defs"
+        ansible.builtin.lineinfile:
+            path: /etc/login.defs
+            regexp: '^(\s*)UMASK\s+\d{3,4}'
+            line: 'UMASK {{ amzn2023cis_umask }}'
+            create: yes
+
+      - name: "4.6.5 | PATCH | Ensure USERGROUPS is not enabled in login.defs
         ansible.builtin.lineinfile:
             path: /etc/login.defs
             regexp: '^USERGROUPS_ENAB'
